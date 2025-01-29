@@ -26,7 +26,6 @@ root.render(
         Fruits
       </Route>
       </Routes>
-      
     </BrowserRouter>
   </React.StrictMode>
 );
