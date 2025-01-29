@@ -1,6 +1,7 @@
 import Container from "react-bootstrap/Container";
 import { Nav, Navbar, NavDropdown, Image } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 function Header() {
   return (
     <div>
@@ -13,16 +14,24 @@ function Header() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto"></Nav>
             <Nav>
-              <Nav.Link href="#home">Home</Nav.Link>
+              <Nav.Link as={Link} to="/">
+                Home
+              </Nav.Link>
               <NavDropdown title="Electronics" id="collapsible-nav-dropdown">
-                <NavDropdown.Item href="#mobiles">Mobiles</NavDropdown.Item>
-                <NavDropdown.Item href="#tvs">TV's</NavDropdown.Item>
-                <NavDropdown.Item href="#appliences">
+                <NavDropdown.Item href="#mobiles" to="/mobiles">
+                  Mobiles
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#tvs" to="/tvs">
+                  TV's
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/homeappliences">
                   Home Appliences
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="#fruits">Fruits</Nav.Link>
-              <Nav.Link eventKey={2} href="#memes">
+              <Nav.Link as={Link} to="/gadgets">
+                Gadgets
+              </Nav.Link>
+              <Nav.Link eventKey={2} href="#cart">
                 Cart
               </Nav.Link>
               <NavDropdown title="Admin" id="collapsible-nav-dropdown">

@@ -1,14 +1,76 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import {
+  RouterProvider,
+  createBrowserRouter,
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
+import Header from "./Header";
+import HomeAppliences from "./HomeAppliences";
+import ShopByCategory from "./ShopByCategory";
+import HomeSlider from "./HomeSlider";
+import Fruits from "./Fruits";
+
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <App />,
+//     children: [
+//       {
+//         path: "/",
+//         element: <Header />
+//       },
+//       {
+//         path: "/homeappliences",
+//         element: <HomeAppliences />
+//       },
+//       {
+//         path: "/shopbycategory",
+//         element: <ShopByCategory />
+//       },
+//       {
+//         path: "/homeslider",
+//         element: <HomeSlider />
+//       },
+//       {
+//         path: "/fruits",
+//         element: <Fruits />
+//       }
+//     ]
+//   }
+// ]);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <BrowserRouter>
+    <Header />
+    <Routes>
+      <Route path="/" element={<App />}>
+        Home
+      </Route>
+      <Route path="/homeAppliences" element={<HomeAppliences />}>
+        Home Appliences
+      </Route>
+      {/* <Route path="/mobiles" element={<Mobiles />}>
+        Mobiles
+      </Route>
+      <Route path="/tvs" element={<TVS />}>
+        TV's
+      </Route> */}
+      <Route path="/homeAppliences" element={<HomeAppliences />}>
+        Home Appliences
+      </Route>
+      <Route path="/gadgets" element={<Fruits />}>
+        Fruits
+      </Route>
+    </Routes>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
-function ShopByCategory() {
+function HomeAppliences() {
   return (
     <div>
       <div className="mt-5">
@@ -22,7 +22,7 @@ function ShopByCategory() {
               <polyline points="2 17 12 22 22 17"></polyline>
               <polyline points="2 12 12 17 22 12"></polyline>
             </svg>
-            <span class="ms-3">Shop by Categories</span>
+            <span class="ms-3">Home Appliences</span>
           </h3>
         </Container>
       </div>
@@ -30,4 +30,4 @@ function ShopByCategory() {
   );
 }
 
-export default ShopByCategory;
+export default HomeAppliences;
