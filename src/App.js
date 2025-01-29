@@ -8,7 +8,7 @@ function App() {
   const a = [1, 2, 3, 4];
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       {/*<HomeSlider />*/}
       <ShopByCategory />
     </div>
