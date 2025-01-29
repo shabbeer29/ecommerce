@@ -1,8 +1,5 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Header from "./Header";
-import HomeSlider from "./HomeSlider";
-import ShopByCategory from "./ShopByCategory";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 function App() {
   const a = [1, 2, 3, 4];
@@ -10,7 +7,8 @@ function App() {
     <div>
       {/* <Header /> */}
       {/*<HomeSlider />*/}
-      <ShopByCategory />
+      {/*<ShopByCategory />*/}
+      {/*<HomeAppliences />*/}
     </div>
   );
 }

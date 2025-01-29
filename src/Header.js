@@ -15,16 +15,22 @@ function Header() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto"></Nav>
             <Nav>
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/">
+                Home
+              </Nav.Link>
               <NavDropdown title="Electronics" id="collapsible-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/mobiles">Mobiles</NavDropdown.Item>
-                <NavDropdown.Item href="tvs">TV's</NavDropdown.Item>
-                <NavDropdown.Item href="appliences">
+                <NavDropdown.Item href="#tvs" to="/tvs">
+                  TV's
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/homeappliences">
                   Home Appliences
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link as={Link} to="/fruits">Fruits</Nav.Link>
-              <Nav.Link eventKey={2} href="#memes">
+              <Nav.Link as={Link} to="/gadgets">
+                Gadgets
+              </Nav.Link>
+              <Nav.Link eventKey={2} href="#cart">
                 Cart
               </Nav.Link>
               <NavDropdown title="Admin" id="collapsible-nav-dropdown">

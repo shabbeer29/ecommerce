@@ -8,18 +8,25 @@ import Mobiles from './Mobiles';
 import Header from './Header';
 import Home from './Home';
 import Fruits from './Fruits';
+import HomeAppliences from "./HomeAppliences";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Header/>
       <Routes>
           <Route path='/' element={ <App/>}/>
-          <Route path='/' element={ <Home/>}/>
-          <Route path='/mobiles' element={ <Mobiles/>}>Mobiles</Route>
-          <Route path='/fruits' element={ <Fruits/>}>Mobiles</Route>
+          {/* <Route path='/' element={ <Home/>}/> */}
+        <Route path='/mobiles' element={<Mobiles />}>Mobiles</Route>
+        <Route path="/homeAppliences" element={<HomeAppliences />}>
+        Home Appliences
+      </Route>
+        <Route path="/gadgets" element={<Fruits />}>
+        Fruits
+      </Route>
       </Routes>
+      
     </BrowserRouter>
   </React.StrictMode>
 );
