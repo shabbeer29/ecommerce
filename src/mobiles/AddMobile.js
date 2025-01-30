@@ -11,8 +11,19 @@ export default function AddMobile({show, setShow}) {
     const navigate = useNavigate();
     const addMobile = (e) => {
         e.preventDefault();
-        axios.post('http://192.168.1.24/ecommerce/public/ecommerceCategory/addMobile', inputs)
-            .then((response) => {
+        const formdata = new FormData();
+        formdata.append('name', inputs.name || '');
+        formdata.append('model', inputs.model || '');
+        formdata.append('color', inputs.color || '');
+        if (inputs.image) {
+            formdata.append('image', inputs.image);
+        }
+        console.log([...formdata]);
+        axios.post('http://192.168.1.24/ecommerce/public/ecommerceCategory/addMobile', formdata,{
+            headers: {
+                "Content-Type":"multipart/form-data",
+            },
+        }).then((response) => {
                 if (response.data.status) {
                     setSuccessMsg(response.data.message);
                     setInputs({});
@@ -27,8 +38,7 @@ export default function AddMobile({show, setShow}) {
                 } else if (response.data.errors) {
                     setErrors(response.data.errors);
                 }
-            })
-            .catch((error) => {
+            }).catch((error) => {
                 if (error.response && error.response.data.errors) {
                     setErrors(error.response.data.errors);
                 } else {
@@ -39,7 +49,7 @@ export default function AddMobile({show, setShow}) {
     }
     const onChangeValue = (e) => {
         const name = e.target.name;
-        const value = e.target.value;
+        const value = name === "image" ? e.target.files[0]:e.target.value;
         setInputs((values) => ({ ...values, [name]: value }));
     }
   return (
@@ -64,6 +74,11 @@ export default function AddMobile({show, setShow}) {
                           <Form.Label>Color</Form.Label>
                           <Form.Control type='text' name='color' placeholder='Color' value={inputs.color || ""} onChange={onChangeValue} />
                          {errors.color && <span style={{color:"red"}}>{ errors.color }</span>}
+                      </Form.Group>
+                      <Form.Group className='mb-3'>
+                          <Form.Label>Image</Form.Label>
+                          <Form.Control type='file' name='image' onChange={onChangeValue}/>
+                          {errors.image && <span style={{color:"red"}}>{ errors.image}</span>}
                       </Form.Group>
                       <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>Close</Button>

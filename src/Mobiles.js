@@ -1,16 +1,23 @@
 import { useNavigate } from "react-router-dom"
-import { Alert, Button, Stack, Table } from "react-bootstrap";
+import { Alert, Button, Stack, Table,Image } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AddMobile from "./mobiles/AddMobile";
+import ViewMobile from "./mobiles/ViewMobile";
 export default function Mobiles() {
     const [mobiles, setMobiles] = useState([]);
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [viewMobile, setViewMobile] = useState(false);
+    const [showMobile, setShowMobile] = useState(null);
+    const viewMobileDetails = (mobile) => {
+        setViewMobile(true);
+        setShowMobile(mobile);
+    }
     useEffect(() => {
         axios.get('http://192.168.1.24/ecommerce/public/ecommerceCategory/getMobilesList')
             .then((response) => setMobiles(response.data.mobiles))
-            .catch((error) => alert(error));
+            .catch((error) => setError(error.response));
     }, []);
     const navigate = useNavigate();
     const goBack = () => {
@@ -20,8 +27,8 @@ export default function Mobiles() {
         <div className="container">
             <Stack direction="horizontal" gap={3}>
                 <h2>Mobile List</h2>
-                <Button className="ms-auto" onClick={() => setShowModal(true)}>Add</Button>
-                <Button onClick={goBack}>Back</Button>
+                <Button className="ms-auto" variant="success" onClick={() => setShowModal(true)}>Add</Button>
+                <Button onClick={goBack} variant="secondary">Back</Button>
             </Stack>
             {error && <p className="danger">{ error }</p>}
             <Table responsive striped bordered>
@@ -31,6 +38,7 @@ export default function Mobiles() {
                         <th>Name</th>
                         <th>Model</th>
                         <th>Color</th>
+                        <th>Image</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -43,7 +51,12 @@ export default function Mobiles() {
                                         <td>{ mobile.name}</td>
                                         <td>{ mobile.model}</td>
                                         <td>{ mobile.color}</td>
-                                        <td>View</td>
+                                        <td><Image src={`http://192.168.1.24/ecommerce/public/mobiles/${mobile.image}`} width={50} height={50} alt="no image"/></td>
+                                        <td>
+                                            <Button variant="info" className="mx-1" onClick={()=> viewMobileDetails(mobile)}>View</Button>
+                                            <Button variant="primary" className="mx-1">Edit</Button>
+                                            <Button variant="danger" className="mx-1">Delete</Button>
+                                        </td>
                                     </tr>
                                 ))
                         ) : (
@@ -54,7 +67,8 @@ export default function Mobiles() {
                     }
                 </tbody>
             </Table>
-            <AddMobile show={showModal} setShow={ setShowModal} />
+            <AddMobile show={showModal} setShow={setShowModal} />
+            {showMobile && <ViewMobile viewMobile={viewMobile} setViewMobile={setViewMobile} mobile={showMobile} />}
         </div>
     )
 }
