@@ -1,30 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Mobiles from './Mobiles';
-import Header from './Header';
-import Home from './Home';
-import Fruits from './Fruits';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Mobiles from "./Mobiles";
+import Header from "./Header";
+import Home from "./Home";
+import Gadgets from "./gadgets/Gadgets";
 import HomeAppliences from "./HomeAppliences";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Header/>
+      <Header />
       <Routes>
-          <Route path='/' element={ <App/>}/>
-          {/* <Route path='/' element={ <Home/>}/> */}
-        <Route path='/mobiles' element={<Mobiles />}>Mobiles</Route>
+        <Route path="/" element={<App />} />
+        {/* <Route path='/' element={ <Home/>}/> */}
+        <Route path="/mobiles" element={<Mobiles />}>
+          Mobiles
+        </Route>
         <Route path="/homeAppliences" element={<HomeAppliences />}>
-        Home Appliences
-      </Route>
-        <Route path="/gadgets" element={<Fruits />}>
-        Fruits
-      </Route>
+          Home Appliences
+        </Route>
+        <Route path="/gadgets" element={<Gadgets />}>
+          Gadgets
+        </Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
