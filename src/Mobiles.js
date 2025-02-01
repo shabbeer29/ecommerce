@@ -1,15 +1,29 @@
 import { useNavigate } from "react-router-dom"
-import { Alert, Button, Stack, Table,Image } from "react-bootstrap";
+import { Alert, Button, Stack, Table,Image,Toast,ToastContainer,ToastBody,ToastHeader } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AddMobile from "./mobiles/AddMobile";
 import ViewMobile from "./mobiles/ViewMobile";
+import EditMobile from "./mobiles/EditMobile";
 export default function Mobiles() {
     const [mobiles, setMobiles] = useState([]);
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
+
+    // To View Mobile
     const [viewMobile, setViewMobile] = useState(false);
     const [showMobile, setShowMobile] = useState(null);
+
+    // TO Edit Mobile
+    const [editMobile, setEditMobile] = useState({});
+    const [editModal, setEditModal] = useState(false);
+    // To Delete Mobile
+    const [deleteMsg, showDeleteMsg] = useState("");
+    const [showToast, setShowtoast] = useState(false);
+    const editMobileDetails = (mobile) => {
+        setEditModal(true);
+        setEditMobile(mobile);
+    }
     const viewMobileDetails = (mobile) => {
         setViewMobile(true);
         setShowMobile(mobile);
@@ -23,6 +37,25 @@ export default function Mobiles() {
     const goBack = () => {
         navigate(-1);
     }
+    const deleteMobie = (id) => {
+        if (window.confirm("Are you Sure You want to delete the Mobile")) {
+            axios.delete("http://192.168.1.24/ecommerce/public/ecommerceCategory/deleteMobile/" + id).then((response) => {
+                if (response.data.status) {
+                    setMobiles(mobiles.filter(m => m.id !== id));
+                    showDeleteMsg(response.data.message);
+                    setShowtoast(true);
+                } else {
+                    showDeleteMsg("This Mobile Cannot be Deleted");
+                }
+            }).catch((error) => {
+                if (error.response) {
+                    showDeleteMsg("Error in deleting the Mobile");
+                } else {
+                    alert("Error in Deleting Mobile");
+                }
+            })
+        }
+    } 
     return (
         <div className="container">
             <Stack direction="horizontal" gap={3}>
@@ -51,11 +84,11 @@ export default function Mobiles() {
                                         <td>{ mobile.name}</td>
                                         <td>{ mobile.model}</td>
                                         <td>{ mobile.color}</td>
-                                        <td><Image src={`http://192.168.1.24/ecommerce/public/mobiles/${mobile.image}`} width={50} height={50} alt="no image"/></td>
+                                        <td>{mobile.image && <Image src={`http://192.168.1.24/ecommerce/public/mobiles/${mobile.image}`} width={50} height={50} alt="no image" />}</td>
                                         <td>
                                             <Button variant="info" className="mx-1" onClick={()=> viewMobileDetails(mobile)}>View</Button>
-                                            <Button variant="primary" className="mx-1">Edit</Button>
-                                            <Button variant="danger" className="mx-1">Delete</Button>
+                                            <Button variant="primary" className="mx-1" onClick={() => editMobileDetails(mobile)}>Edit</Button>
+                                            <Button variant="danger" className="mx-1" onClick={() => deleteMobie(mobile.id)}>Delete</Button>
                                         </td>
                                     </tr>
                                 ))
@@ -67,8 +100,15 @@ export default function Mobiles() {
                     }
                 </tbody>
             </Table>
+            <ToastContainer position='bottom-end' className='p-3'>
+              <Toast show={showToast} onClose={() => setShowtoast(false)} delay={7000} autohide bg='success'>
+                  <ToastHeader>Success</ToastHeader>
+                  <ToastBody>{ deleteMsg}</ToastBody>
+              </Toast>
+          </ToastContainer>
             <AddMobile show={showModal} setShow={setShowModal} />
             {showMobile && <ViewMobile viewMobile={viewMobile} setViewMobile={setViewMobile} mobile={showMobile} />}
+            {editMobile && <EditMobile show={editModal} setEditModal={ setEditModal} mobile={editMobile } />}
         </div>
     )
 }

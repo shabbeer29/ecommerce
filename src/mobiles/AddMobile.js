@@ -8,7 +8,6 @@ export default function AddMobile({show, setShow}) {
     const [errors, setErrors] = useState({});
     const [successMsg, setSuccessMsg] = useState("");
     const [showToast, setShowToast] = useState(false);
-    const navigate = useNavigate();
     const addMobile = (e) => {
         e.preventDefault();
         const formdata = new FormData();
@@ -18,7 +17,6 @@ export default function AddMobile({show, setShow}) {
         if (inputs.image) {
             formdata.append('image', inputs.image);
         }
-        console.log([...formdata]);
         axios.post('http://192.168.1.24/ecommerce/public/ecommerceCategory/addMobile', formdata,{
             headers: {
                 "Content-Type":"multipart/form-data",
