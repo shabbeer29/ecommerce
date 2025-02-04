@@ -1,12 +1,18 @@
 import { useNavigate } from "react-router-dom"
 import { Alert, Button, Stack, Table,Image,Toast,ToastContainer,ToastBody,ToastHeader } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext, createContext } from "react";
 import axios from "axios";
 import AddMobile from "./mobiles/AddMobile";
 import ViewMobile from "./mobiles/ViewMobile";
 import EditMobile from "./mobiles/EditMobile";
+import { useTheme } from "./ThemeProvider";
+
+export const mobileContext = createContext();
+ export const useMobile = () => useContext(mobileContext);
 export default function Mobiles() {
-    const [mobiles, setMobiles] = useState([]);
+    const { theme } = useTheme();
+    // const [mobiles, setMobiles] = useState([]);
+    const { mobiles, setMobiles } = useMobile();
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
@@ -28,9 +34,12 @@ export default function Mobiles() {
         setViewMobile(true);
         setShowMobile(mobile);
     }
+
     useEffect(() => {
         axios.get('http://192.168.1.24/ecommerce/public/ecommerceCategory/getMobilesList')
-            .then((response) => setMobiles(response.data.mobiles))
+            .then((response) => {
+                setMobiles(response.data.mobiles);
+            })
             .catch((error) => setError(error.response));
     }, []);
     const navigate = useNavigate();
@@ -57,58 +66,58 @@ export default function Mobiles() {
         }
     } 
     return (
-        <div className="container">
-            <Stack direction="horizontal" gap={3}>
-                <h2>Mobile List</h2>
-                <Button className="ms-auto" variant="success" onClick={() => setShowModal(true)}>Add</Button>
-                <Button onClick={goBack} variant="secondary">Back</Button>
-            </Stack>
-            {error && <p className="danger">{ error }</p>}
-            <Table responsive striped bordered>
-                <thead>
-                    <tr>
-                        <th>S.No</th>
-                        <th>Name</th>
-                        <th>Model</th>
-                        <th>Color</th>
-                        <th>Image</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        mobiles.length > 0 ? (
-                                mobiles.map((mobile, index) => (
-                                    <tr key={index}>
-                                        <td>{ index+1}</td>
-                                        <td>{ mobile.name}</td>
-                                        <td>{ mobile.model}</td>
-                                        <td>{ mobile.color}</td>
-                                        <td>{mobile.image && <Image src={`http://192.168.1.24/ecommerce/public/mobiles/${mobile.image}`} width={50} height={50} alt="no image" />}</td>
-                                        <td>
-                                            <Button variant="info" className="mx-1" onClick={()=> viewMobileDetails(mobile)}>View</Button>
-                                            <Button variant="primary" className="mx-1" onClick={() => editMobileDetails(mobile)}>Edit</Button>
-                                            <Button variant="danger" className="mx-1" onClick={() => deleteMobie(mobile.id)}>Delete</Button>
-                                        </td>
-                                    </tr>
-                                ))
-                        ) : (
-                                <tr>
-                                    <td colSpan={6}><Alert variant="danger">No records Found</Alert></td>
+        <div className={`container ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
+        <Stack direction="horizontal" gap={3}>
+            <h2>Mobile List</h2>
+            <Button className="ms-auto" variant="success" onClick={() => setShowModal(true)}>Add</Button>
+            <Button onClick={goBack} variant="secondary">Back</Button>
+        </Stack>
+        {error && <p className="danger">{ error }</p>}
+        <Table responsive striped bordered className={theme === "dark" ? "table-dark" : ""}>
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Model</th>
+                    <th>Color</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    mobiles.length > 0 ? (
+                            mobiles.map((mobile, index) => (
+                                <tr key={index}>
+                                    <td>{ index+1}</td>
+                                    <td>{ mobile.name}</td>
+                                    <td>{ mobile.model}</td>
+                                    <td>{ mobile.color}</td>
+                                    <td>{mobile.image && <Image src={`http://192.168.1.24/ecommerce/public/mobiles/${mobile.image}`} width={50} height={50} alt="no image" />}</td>
+                                    <td>
+                                        <Button variant="info" className="mx-1" onClick={()=> viewMobileDetails(mobile)}>View</Button>
+                                        <Button variant="primary" className="mx-1" onClick={() => editMobileDetails(mobile)}>Edit</Button>
+                                        <Button variant="danger" className="mx-1" onClick={() => deleteMobie(mobile.id)}>Delete</Button>
+                                    </td>
                                 </tr>
-                        )
-                    }
-                </tbody>
-            </Table>
-            <ToastContainer position='bottom-end' className='p-3'>
-              <Toast show={showToast} onClose={() => setShowtoast(false)} delay={7000} autohide bg='success'>
-                  <ToastHeader>Success</ToastHeader>
-                  <ToastBody>{ deleteMsg}</ToastBody>
-              </Toast>
-          </ToastContainer>
-            <AddMobile show={showModal} setShow={setShowModal} />
-            {showMobile && <ViewMobile viewMobile={viewMobile} setViewMobile={setViewMobile} mobile={showMobile} />}
-            {editMobile && <EditMobile show={editModal} setEditModal={ setEditModal} mobile={editMobile } />}
+                            ))
+                    ) : (
+                            <tr>
+                                <td colSpan={6}><Alert variant="danger">No records Found</Alert></td>
+                            </tr>
+                    )
+                }
+            </tbody>
+        </Table>
+        <ToastContainer position='bottom-end' className='p-3'>
+            <Toast show={showToast} onClose={() => setShowtoast(false)} delay={7000} autohide bg='success'>
+                <ToastHeader>Success</ToastHeader>
+                <ToastBody>{ deleteMsg}</ToastBody>
+            </Toast>
+        </ToastContainer>
+        <AddMobile show={showModal} setShow={setShowModal} />
+        {showMobile && <ViewMobile viewMobile={viewMobile} setViewMobile={setViewMobile} mobile={showMobile} />}
+        {editMobile && <EditMobile show={editModal} setEditModal={ setEditModal} mobile={editMobile } />}
         </div>
     )
 }

@@ -1,15 +1,18 @@
 import "./App.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-
+import Home from "./Home";
+import { useMobile } from "./Mobiles";
 function App() {
-  const a = [1, 2, 3, 4];
+  const { mobiles} = useMobile();
   return (
     <div>
-      {/* <Header /> */}
-      {/*<HomeSlider />*/}
-      {/*<ShopByCategory />*/}
-      {/*<HomeAppliences />*/}
-    </div>
+      {
+        mobiles.map((mobile) => (
+          <li key={mobile.id}>{ mobile.name}</li>
+        ))
+      }
+          <Home/>
+      </div>
   );
 }
 export default App;

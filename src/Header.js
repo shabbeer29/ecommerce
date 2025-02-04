@@ -1,12 +1,13 @@
 import Container from "react-bootstrap/Container";
-import { Nav, Navbar, NavDropdown, Image } from "react-bootstrap";
+import { Nav, Navbar, NavDropdown, Image,Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
-import Mobiles from "./Mobiles";
+import { useTheme } from "./ThemeProvider";
 function Header() {
+  const {theme, toggleTheme} = useTheme();
   return (
-    <div>
-      <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+    <div className={theme}>
+      <Navbar collapseOnSelect expand="lg" className={`navbar-${theme} bg-${theme}`}>
         <Container>
           <Navbar.Brand href="#home">
             <Image src="/logo/jusya-logo.png" style={{ width: "180px" }} />
@@ -38,11 +39,15 @@ function Header() {
                 <NavDropdown.Item href="#action/3.2">Login</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3">Logout</NavDropdown.Item>
               </NavDropdown>
+              {/* Toggle Theme Button */}
+            <Button variant={theme === "dark" ? "light" : "dark"} onClick={toggleTheme} className="ms-3">
+              {theme === "dark" ? "Light Mode" : "Dark Mode"}
+            </Button>
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-    </div>
+      </div>
   );
 }
 

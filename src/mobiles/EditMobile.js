@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle, Form, Image, FormText, FormControl , Toast,ToastContainer,ToastHeader,ToastBody} from "react-bootstrap";
 import axios from "axios";
+import { useTheme } from "../ThemeProvider";
 
 const EditMobile = ({ show, setEditModal, mobile }) => {
+    const { theme } = useTheme();
     const [editValue, setEditValue] = useState({
         id:"",
         name:"",
@@ -40,7 +42,6 @@ const EditMobile = ({ show, setEditModal, mobile }) => {
     const editMobile = (e) => {
         e.preventDefault();
         const editFormData = new FormData();
-        
         editFormData.append('id', editValue.id);
         editFormData.append('name', editValue.name);
         editFormData.append('model', editValue.model);
@@ -48,8 +49,6 @@ const EditMobile = ({ show, setEditModal, mobile }) => {
         if (editValue.image) {
             editFormData.append('image', editValue.image);
         }
-       
-
         axios.post('http://192.168.1.24/ecommerce/public/ecommerceCategory/updateMobile', editFormData, {
             headers: {
                 "Content-Type" : "multipart/form-data",
@@ -61,13 +60,14 @@ const EditMobile = ({ show, setEditModal, mobile }) => {
                 setSuccessMsg(response.data.message);
                 setEditError({});
                 closeEditModal();
-                setShowToast(true);
                 setTimeout(() => {
                     window.location.reload();
-                }, 5000);
+                }, 3000);
+                setShowToast(true);
             }
         }).catch((error) => console.log(error.response))
     }
+    const modalThemeClass = theme === "dark" ? "bg-dark text-light" : "bg-light text-dark";  // Define theme classes for modal
     return (
         <>
             <Modal show={ show} onHide={closeEditModal}>

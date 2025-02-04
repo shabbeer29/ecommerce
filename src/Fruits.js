@@ -11,21 +11,21 @@ import {
 } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import AddGadget from "./gadgets/AddGadget";
 
 function Fruits() {
-  const [records, setRecords] = useState([]);
+  const [records, setRecords] = useState({});
   useEffect(() => {
     getAxiosproducts();
   }, []);
   function getAxiosproducts() {
     axios
-      .get("https://fakestoreapi.com/products")
-      .then(response => setRecords(response.data))
+      .get("http://192.168.1.24/ecommerce/public/ecommerceCategory/getGadgetsList")
+      .then(response => setRecords(response.data.gadgets))
       .catch(error => alert(error));
   }
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const closeGadget = () => setShow(false);
   const addGadget = () => setShow(true);
   const editGadgetClose = () => setShowEdit(false);
   const editGadget = () => setShowEdit(true);
@@ -69,7 +69,6 @@ function Fruits() {
                     S.No.
                   </th>
                   <th>category</th>
-                  <th>Rating</th>
                   <th>Price</th>
                   <th>Image</th>
                   <th>Actions</th>
@@ -78,19 +77,13 @@ function Fruits() {
               <tbody>
                 {records.length > 0 ? (
                   records
-                    .filter(item => item.category === "jewelery")
                     .map((item, index) => (
                       <tr key={index}>
                         <td className="text-center">{index + 1}</td>
                         <td>{item.category}</td>
-                        <td>{item.rating.rate}</td>
                         <td>{item.price}</td>
                         <td>
-                          <Image
-                            src={item.image}
-                            width="30"
-                            alt="product image"
-                          />
+                          {item.image && <Image src={`http://192.168.1.24/ecommerce/public/gadgets/${item.image}`} width={50} height={50} alt="no image" />}
                         </td>
                         <td>
                           <Button
@@ -98,7 +91,7 @@ function Fruits() {
                             size="sm"
                             onClick={editGadget}
                           >
-                            <i class="bi bi-pencil-square"></i>&nbsp;Edit
+                            <i className="bi bi-pencil-square"></i>&nbsp;Edit
                           </Button>
                           <Button variant="danger" size="sm" className="ms-1">
                             <i className="bi bi-trash3"></i>Delete
@@ -116,65 +109,7 @@ function Fruits() {
               </tbody>
             </Table>
           </div>
-          <Modal show={show} onHide={closeGadget}>
-            <Modal.Header closeButton>
-              <Modal.Title>Add Gadget</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <Form.Group
-                  as={Row}
-                  size="sm"
-                  className="mb-1"
-                  controlId="category"
-                >
-                  <Form.Label column sm={5} className="text-end">
-                    Gadget Category&nbsp;:
-                  </Form.Label>
-                  <Col sm={7}>
-                    <Form.Control
-                      size="sm"
-                      type="text"
-                      placeholder="Gadget Category"
-                    />
-                  </Col>
-                </Form.Group>
-
-                <Form.Group as={Row} className="mb-1" controlId="rating">
-                  <Form.Label column sm={5} className="text-end">
-                    Rating&nbsp;:
-                  </Form.Label>
-                  <Col sm={7}>
-                    <Form.Control size="sm" type="text" placeholder="Rating" />
-                  </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-1" controlId="price">
-                  <Form.Label column sm={5} className="text-end">
-                    Price&nbsp;:
-                  </Form.Label>
-                  <Col sm={7}>
-                    <Form.Control size="sm" type="text" placeholder="Price" />
-                  </Col>
-                </Form.Group>
-                <Form.Group as={Row} className="mb-1" controlId="image">
-                  <Form.Label column sm={5} className="text-end">
-                    Image&nbsp;:
-                  </Form.Label>
-                  <Col sm={7}>
-                    <Form.Control type="file" size="sm" />
-                  </Col>
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="danger" size="sm" onClick={closeGadget}>
-                <i className="bi bi-x"></i>&nbsp;Close
-              </Button>
-              <Button variant="success" size="sm" onClick={closeGadget}>
-                <i className="bi bi-plus-lg"></i>&nbsp;Add Gadget
-              </Button>
-            </Modal.Footer>
-          </Modal>
+          <AddGadget show={show} setShow={setShow}/>
           <Modal show={showEdit} onHide={editGadgetClose}>
             <Modal.Header closeButton>
               <Modal.Title>Edit Gadget</Modal.Title>

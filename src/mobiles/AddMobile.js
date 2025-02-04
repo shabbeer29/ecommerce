@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { Button,Modal,Form, ToastContainer, Toast, ToastHeader, ToastBody } from 'react-bootstrap';
-import { replace, useNavigate } from 'react-router-dom';
 export default function AddMobile({show, setShow}) {
     const handleClose = () => setShow(false);
+    // To Handle Form Inputs
     const [inputs, setInputs] = useState({});
-    const [errors, setErrors] = useState({});
-    const [successMsg, setSuccessMsg] = useState("");
-    const [showToast, setShowToast] = useState(false);
+    const [errors, setErrors] = useState({}); //For Error Message
+    const [successMsg, setSuccessMsg] = useState(""); //To Store Success Message
+    const [showToast, setShowToast] = useState(false); //To show in Toast Modal
     const addMobile = (e) => {
         e.preventDefault();
         const formdata = new FormData();
