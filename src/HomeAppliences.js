@@ -1,29 +1,28 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container } from "react-bootstrap";
+import { useReducer } from "react";
+import { Button, Container } from "react-bootstrap";
+const countChange = (state, action) => {
+    switch (action.type) {
+      case "increment":
+        return { count: state.count + 1 };
+      case "decrement":
+        return { count: state.count - 1 };
+      default:
+        return state;
+    }
+  };
 function HomeAppliences() {
+  const [state, dispatch] = useReducer(countChange, { count: 0 });
   return (
     <div>
       <div className="mt-5">
         <Container>
-          <h3 class="align-items-center d-flex mb-0 h4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-primary"
-            >
-              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-              <polyline points="2 17 12 22 22 17"></polyline>
-              <polyline points="2 12 12 17 22 12"></polyline>
-            </svg>
-            <span class="ms-3">Home Appliences</span>
+          <h3>
+            <span className="ms-3">Home Appliences</span>
           </h3>
+          <h1>Count : { state.count }</h1>
+          <Button onClick={() => dispatch({type:'increment'})}>Add</Button>
+          <Button onClick={() => dispatch({type:'decrement'})} disabled={state.count === 0}>Decrement</Button>
         </Container>
       </div>
     </div>

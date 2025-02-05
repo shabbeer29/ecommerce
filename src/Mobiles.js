@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom"
-import { Alert, Button, Stack, Table,Image,Toast,ToastContainer,ToastBody,ToastHeader } from "react-bootstrap";
+import { Form, useNavigate } from "react-router-dom"
+import { Alert, Button, Stack, Table,Image,Toast,ToastContainer,ToastBody,ToastHeader, Pagination, FormControl } from "react-bootstrap";
 import { useEffect, useState, useContext, createContext } from "react";
 import axios from "axios";
 import AddMobile from "./mobiles/AddMobile";
@@ -26,6 +26,22 @@ export default function Mobiles() {
     // To Delete Mobile
     const [deleteMsg, showDeleteMsg] = useState("");
     const [showToast, setShowtoast] = useState(false);
+    const [search, setSearch] = useState("");
+
+    // To filter records
+    const filterRecords = mobiles.filter(mobile => 
+         mobile.name.toLowerCase().includes(search.toLowerCase())
+    );
+    
+
+    // For Pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const mobilePerPage = 5;
+    const indexOfLastMobile = currentPage * mobilePerPage;
+    const indexOfFirstMobile = indexOfLastMobile - mobilePerPage;
+    const currentMobiles = filterRecords.slice(indexOfFirstMobile, indexOfLastMobile);
+    const totalpages = Math.ceil(filterRecords.length / mobilePerPage);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
     const editMobileDetails = (mobile) => {
         setEditModal(true);
         setEditMobile(mobile);
@@ -39,9 +55,10 @@ export default function Mobiles() {
         axios.get('http://192.168.1.24/ecommerce/public/ecommerceCategory/getMobilesList')
             .then((response) => {
                 setMobiles(response.data.mobiles);
+                setCurrentPage(1);
             })
             .catch((error) => setError(error.response));
-    }, []);
+    }, [search]);
     const navigate = useNavigate();
     const goBack = () => {
         navigate(-1);
@@ -68,11 +85,21 @@ export default function Mobiles() {
     return (
         <div className={`container ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
         <Stack direction="horizontal" gap={3}>
-            <h2>Mobile List</h2>
+                <h2>Mobile List</h2>
+            <FormControl type="search" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
             <Button className="ms-auto" variant="success" onClick={() => setShowModal(true)}>Add</Button>
             <Button onClick={goBack} variant="secondary">Back</Button>
         </Stack>
-        {error && <p className="danger">{ error }</p>}
+            {error && <p className="danger">{error}</p>}
+            <Pagination>
+                <Pagination.Prev onClick={() => currentPage > 1 && paginate(currentPage -1 )} disabled={currentPage == 1} />
+                {
+                    Array.from({ length: totalpages }, (_, index) => (
+                        <Pagination.Item key={index} active={index + 1 === currentPage} onClick={() => paginate(index + 1)}>{index + 1}</Pagination.Item>
+                    ))
+                }
+                <Pagination.Next onClick={() => currentPage < totalpages && paginate(currentPage + 1)} disabled={ currentPage == totalpages} />
+            </Pagination>
         <Table responsive striped bordered className={theme === "dark" ? "table-dark" : ""}>
             <thead>
                 <tr>
@@ -86,10 +113,10 @@ export default function Mobiles() {
             </thead>
             <tbody>
                 {
-                    mobiles.length > 0 ? (
-                            mobiles.map((mobile, index) => (
+                    currentMobiles.length > 0 ? (
+                            currentMobiles.map((mobile, index) => (
                                 <tr key={index}>
-                                    <td>{ index+1}</td>
+                                    <td>{ indexOfFirstMobile + index + 1}</td>
                                     <td>{ mobile.name}</td>
                                     <td>{ mobile.model}</td>
                                     <td>{ mobile.color}</td>
