@@ -21,7 +21,7 @@ const viewMobile = ({ viewMobile, setViewMobile, mobile }) => {
                     </Row>
                     <Row className="mb-3">
                         <Col xs={4}>
-                            <span className="fw-bold">Model:</span>
+                            <span className="fw-bold">Price:</span>
                         </Col>
                         <Col xs={8}>
                             <span className="p-1">{mobile.model}</span>

@@ -8,15 +8,18 @@ import Mobiles from './Mobiles';
 import Header from './Header';
 import Home from './Home';
 import Fruits from './Fruits';
+import Cart from './Cart';
 import HomeAppliences from './HomeAppliences';
 import ThemeProvider from './ThemeProvider';
 import { mobileContext } from './Mobiles';
+import { CartProvider } from './CartProvider';
 const root = ReactDOM.createRoot(document.getElementById("root"));
 function RootComponent() {
   const [mobiles, setMobiles] = useState([]);
   return(
     <React.StrictMode>
       <ThemeProvider>
+        <CartProvider>
         <BrowserRouter>
           <Header />
             <mobileContext.Provider value={{ mobiles, setMobiles }}>
@@ -24,16 +27,13 @@ function RootComponent() {
               <Route path='/' element={<App />} />
               {/* <Route path='/' element={ <Home/>}/> */}
               <Route path='/mobiles' element={<Mobiles />}>Mobiles</Route>
-              <Route path="/homeAppliences" element={<HomeAppliences />}>
-                Home Appliences
-              </Route>
-              <Route path="/gadgets" element={<Fruits />}>
-                Gadgets
-              </Route>
+              <Route path="/homeAppliences" element={<HomeAppliences />}>Home Appliences</Route>
+              <Route path="/gadgets" element={<Fruits />}>Gadgets</Route>
+              <Route path="/cart" element={<Cart />}>Cart</Route>
             </Routes>
-            </mobileContext.Provider>
-            
-        </BrowserRouter>
+            </mobileContext.Provider>           
+          </BrowserRouter>
+        </CartProvider>
       </ThemeProvider>
     </React.StrictMode>
   );

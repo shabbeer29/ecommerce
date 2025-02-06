@@ -3,8 +3,11 @@ import { Nav, Navbar, NavDropdown, Image,Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link } from "react-router-dom";
 import { useTheme } from "./ThemeProvider";
+import { useCart } from "./CartProvider";
 function Header() {
-  const {theme, toggleTheme} = useTheme();
+  const { theme, toggleTheme } = useTheme();
+  const { cartItems } = useCart();
+   const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
   return (
     <div className={theme}>
       <Navbar collapseOnSelect expand="lg" className={`navbar-${theme} bg-${theme}`}>
@@ -16,24 +19,14 @@ function Header() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto"></Nav>
             <Nav>
-              <Nav.Link as={Link} to="/">
-                Home
-              </Nav.Link>
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
               <NavDropdown title="Electronics" id="collapsible-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/mobiles">Mobiles</NavDropdown.Item>
-                <NavDropdown.Item href="#tvs" to="/tvs">
-                  TV's
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/homeappliences">
-                  Home Appliences
-                </NavDropdown.Item>
+                <NavDropdown.Item href="#tvs" to="/tvs">TV's</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/homeappliences">Home Appliences</NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link as={Link} to="/gadgets">
-                Gadgets
-              </Nav.Link>
-              <Nav.Link eventKey={2} href="#cart">
-                Cart
-              </Nav.Link>
+              <Nav.Link as={Link} to="/gadgets">Gadgets</Nav.Link>
+              <Nav.Link as={Link} to="/cart">Cart Items(<span>{ totalQuantity}</span>)</Nav.Link>
               <NavDropdown title="Admin" id="collapsible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Admin</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">Login</NavDropdown.Item>

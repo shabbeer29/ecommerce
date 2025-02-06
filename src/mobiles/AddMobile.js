@@ -64,7 +64,7 @@ export default function AddMobile({show, setShow}) {
                         {errors.name && <span style={{color:"red"}}>{ errors.name }</span>}
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Model</Form.Label>
+                        <Form.Label>Price</Form.Label>
                           <Form.Control type="text" placeholder="Model" name="model" value={inputs.model || ""} onChange={onChangeValue} />
                         {errors.model && <span style={{color:"red"}}>{ errors.model }</span>}
                       </Form.Group>

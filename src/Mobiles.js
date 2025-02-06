@@ -1,17 +1,21 @@
 import { Form, useNavigate } from "react-router-dom"
 import { Alert, Button, Stack, Table,Image,Toast,ToastContainer,ToastBody,ToastHeader, Pagination, FormControl } from "react-bootstrap";
-import { useEffect, useState, useContext, createContext } from "react";
+import { useEffect, useState, useContext, createContext, useCallback } from "react";
 import axios from "axios";
 import AddMobile from "./mobiles/AddMobile";
 import ViewMobile from "./mobiles/ViewMobile";
 import EditMobile from "./mobiles/EditMobile";
 import { useTheme } from "./ThemeProvider";
+import { useCart } from "./CartProvider";
 
 export const mobileContext = createContext();
  export const useMobile = () => useContext(mobileContext);
 export default function Mobiles() {
+    const {addToCart } = useCart();
+    function handleAddToCart(item) {
+        addToCart(item);
+    }
     const { theme } = useTheme();
-    // const [mobiles, setMobiles] = useState([]);
     const { mobiles, setMobiles } = useMobile();
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -33,7 +37,6 @@ export default function Mobiles() {
          mobile.name.toLowerCase().includes(search.toLowerCase())
     );
     
-
     // For Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const mobilePerPage = 5;
@@ -42,14 +45,14 @@ export default function Mobiles() {
     const currentMobiles = filterRecords.slice(indexOfFirstMobile, indexOfLastMobile);
     const totalpages = Math.ceil(filterRecords.length / mobilePerPage);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-    const editMobileDetails = (mobile) => {
+    const editMobileDetails = useCallback((mobile) => {
         setEditModal(true);
         setEditMobile(mobile);
-    }
-    const viewMobileDetails = (mobile) => {
+    }, []);
+    const viewMobileDetails = useCallback((mobile) => {
         setViewMobile(true);
         setShowMobile(mobile);
-    }
+    }, []);
 
     useEffect(() => {
         axios.get('http://192.168.1.24/ecommerce/public/ecommerceCategory/getMobilesList')
@@ -63,7 +66,7 @@ export default function Mobiles() {
     const goBack = () => {
         navigate(-1);
     }
-    const deleteMobie = (id) => {
+    const deleteMobie = useCallback((id) => {
         if (window.confirm("Are you Sure You want to delete the Mobile")) {
             axios.delete("http://192.168.1.24/ecommerce/public/ecommerceCategory/deleteMobile/" + id).then((response) => {
                 if (response.data.status) {
@@ -81,7 +84,7 @@ export default function Mobiles() {
                 }
             })
         }
-    } 
+    }, [mobiles, setMobiles]); 
     return (
         <div className={`container ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
         <Stack direction="horizontal" gap={3}>
@@ -105,7 +108,7 @@ export default function Mobiles() {
                 <tr>
                     <th>S.No</th>
                     <th>Name</th>
-                    <th>Model</th>
+                    <th>Price</th>
                     <th>Color</th>
                     <th>Image</th>
                     <th>Actions</th>
@@ -125,6 +128,7 @@ export default function Mobiles() {
                                         <Button variant="info" className="mx-1" onClick={()=> viewMobileDetails(mobile)}>View</Button>
                                         <Button variant="primary" className="mx-1" onClick={() => editMobileDetails(mobile)}>Edit</Button>
                                         <Button variant="danger" className="mx-1" onClick={() => deleteMobie(mobile.id)}>Delete</Button>
+                                        <Button onClick={() => handleAddToCart(mobile)}>Add To Cart</Button>
                                     </td>
                                 </tr>
                             ))

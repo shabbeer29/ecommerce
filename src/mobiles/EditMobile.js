@@ -83,7 +83,7 @@ const EditMobile = ({ show, setEditModal, mobile }) => {
                             {editError.name && <span className="text-danger">{editError.name }</span>}
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Model</Form.Label>
+                            <Form.Label>Price</Form.Label>
                             <Form.Control type="text" placeholder="Model" name="model" value={editValue.model} onChange={onChangeEditMobile} />
                             {editError.model && <span className="text-danger">{editError.model }</span>}
                             
