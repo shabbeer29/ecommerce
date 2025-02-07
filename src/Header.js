@@ -26,6 +26,7 @@ function Header() {
                 <NavDropdown.Item as={Link} to="/homeappliences">Home Appliences</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link as={Link} to="/gadgets">Gadgets</Nav.Link>
+              <Nav.Link as={Link} to="/orders">Orders</Nav.Link>
               <Nav.Link as={Link} to="/cart">Cart Items(<span>{ totalQuantity}</span>)</Nav.Link>
               <NavDropdown title="Admin" id="collapsible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Admin</NavDropdown.Item>

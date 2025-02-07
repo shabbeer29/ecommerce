@@ -9,6 +9,7 @@ import Header from './Header';
 import Home from './Home';
 import Fruits from './Fruits';
 import Cart from './Cart';
+import Order from './Order';
 import HomeAppliences from './HomeAppliences';
 import ThemeProvider from './ThemeProvider';
 import { mobileContext } from './Mobiles';
@@ -30,6 +31,7 @@ function RootComponent() {
               <Route path="/homeAppliences" element={<HomeAppliences />}>Home Appliences</Route>
               <Route path="/gadgets" element={<Fruits />}>Gadgets</Route>
               <Route path="/cart" element={<Cart />}>Cart</Route>
+              <Route path="/orders" element={<Order />}>Order</Route>
             </Routes>
             </mobileContext.Provider>           
           </BrowserRouter>

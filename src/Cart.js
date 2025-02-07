@@ -9,8 +9,22 @@ const Cart = () => {
     const total_amount = cartItems.reduce((total, item) => total + (item.quantity * item.model), 0);
     
     const paymentUpdate = () => {
-        window.open("https://buy.stripe.com/test_3cs01tfW91xq5TqbII", "_blank");
-    }
+        const cartItems = JSON.parse(localStorage.getItem("cartItems"));
+    axios.post("http://192.168.1.24/ecommerce/public/ecommerceCategory/paymentLink", 
+        { cartItems: cartItems, total_amount: total_amount },
+        // { headers: { "Cache-Control": "no-cache", "Pragma": "no-cache" } } // Prevent cache
+    ).then((response) => {
+        console.log(response.data);
+        if (response.data.status === 'success') {
+            window.open(response.data.url,"_blank");
+        } else {
+            console.log("Payment URL generation failed:", response.data.message);
+        }
+    }).catch((error) => {
+        console.error("Error:", error);
+    });
+};
+
     return (
         <div  className={`container ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
             <h1>Cart Items</h1>
