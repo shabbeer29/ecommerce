@@ -22,7 +22,7 @@ function Header() {
               <Nav.Link as={Link} to="/">Home</Nav.Link>
               <NavDropdown title="Electronics" id="collapsible-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/mobiles">Mobiles</NavDropdown.Item>
-                <NavDropdown.Item href="#tvs" to="/tvs">TV's</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/tv">TV's</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/homeappliences">Home Appliences</NavDropdown.Item>
               </NavDropdown>
               <Nav.Link as={Link} to="/gadgets">Gadgets</Nav.Link>
@@ -30,7 +30,7 @@ function Header() {
               <Nav.Link as={Link} to="/cart">Cart Items(<span>{ totalQuantity}</span>)</Nav.Link>
               <NavDropdown title="Admin" id="collapsible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Admin</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Login</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/login">Login</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3">Logout</NavDropdown.Item>
               </NavDropdown>
               {/* Toggle Theme Button */}

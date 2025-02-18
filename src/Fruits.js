@@ -14,14 +14,19 @@ import axios from "axios";
 import AddGadget from "./gadgets/AddGadget";
 
 function Fruits() {
-  const [records, setRecords] = useState({});
+  const [records, setRecords] = useState([]);
   useEffect(() => {
     getAxiosproducts();
   }, []);
   function getAxiosproducts() {
     axios
-      .get("http://192.168.1.24/ecommerce/public/ecommerceCategory/getGadgetsList")
-      .then(response => setRecords(response.data.gadgets))
+      .get("http://192.168.1.24/ecommerce/public/ecommerceCategory/getGadgetsList", {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer 86f196f2b9221d72cd3126e9ea5186fd`,
+        },
+      })
+      .then(response => setRecords(response.data.gadgets||[]))
       .catch(error => alert(error));
   }
   const [show, setShow] = useState(false);

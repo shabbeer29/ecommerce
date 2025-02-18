@@ -14,6 +14,8 @@ import HomeAppliences from './HomeAppliences';
 import ThemeProvider from './ThemeProvider';
 import { mobileContext } from './Mobiles';
 import { CartProvider } from './CartProvider';
+import Television from './Television';
+import Login from './Login';
 const root = ReactDOM.createRoot(document.getElementById("root"));
 function RootComponent() {
   const [mobiles, setMobiles] = useState([]);
@@ -32,6 +34,8 @@ function RootComponent() {
               <Route path="/gadgets" element={<Fruits />}>Gadgets</Route>
               <Route path="/cart" element={<Cart />}>Cart</Route>
               <Route path="/orders" element={<Order />}>Order</Route>
+              <Route path="/tv" element={<Television />}>Tv</Route>
+              <Route path="/login" element={<Login />}>Tv</Route>
             </Routes>
             </mobileContext.Provider>           
           </BrowserRouter>

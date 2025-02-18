@@ -51,7 +51,7 @@ export default function AddMobile({show, setShow}) {
         setInputs((values) => ({ ...values, [name]: value }));
     }
   return (
-    <>
+      <>
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Add Mobile</Modal.Title>

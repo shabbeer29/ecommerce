@@ -55,7 +55,12 @@ export default function Mobiles() {
     }, []);
 
     useEffect(() => {
-        axios.get('http://192.168.1.24/ecommerce/public/ecommerceCategory/getMobilesList')
+        axios.get('http://192.168.1.24/ecommerce/public/ecommerceCategory/getMobilesList', {
+            headers: {
+                "Authorization": `Bearer 86f196f2b9221d72cd3126e9ea5186fd`,
+                "Content-Type": "application/json",
+            }
+        })
             .then((response) => {
                 setMobiles(response.data.mobiles);
                 setCurrentPage(1);
@@ -84,7 +89,7 @@ export default function Mobiles() {
                 }
             })
         }
-    }, [mobiles, setMobiles]); 
+    }, [mobiles]); 
     return (
         <div className={`container ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
         <Stack direction="horizontal" gap={3}>
@@ -127,7 +132,7 @@ export default function Mobiles() {
                                     <td>
                                         <Button variant="info" className="mx-1" onClick={()=> viewMobileDetails(mobile)}>View</Button>
                                         <Button variant="primary" className="mx-1" onClick={() => editMobileDetails(mobile)}>Edit</Button>
-                                        <Button variant="danger" className="mx-1" onClick={() => deleteMobie(mobile.id)}>Delete</Button>
+                                        <Button variant="danger" className="mx-1" onClick={() =>    deleteMobie(mobile.id)}>Delete</Button>
                                         <Button onClick={() => handleAddToCart(mobile)}>Add To Cart</Button>
                                     </td>
                                 </tr>

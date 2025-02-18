@@ -15,17 +15,18 @@ const Order = () => {
     const fetchOrders = async () => {
             try {
                 const response = await axios.get("http://192.168.1.24/ecommerce/public/ecommerceCategory/getOrdersList");
-                console.log(response);
                 if (response.request.status == 200 && Array.isArray(response.data.orders)) {
                     setOrders(response.data.orders);
                 } else {
                     setOrders([]);  // Empty array
                 }
             } catch (error) {
-                if (!error.response) {
-                    setError("Network error: Unable to connect to the server.");
+                if (error.message) {
+                    setError(error.message);
+                } else if(error.request){
+                    setError("Network Error : "+error.request.status+" : "+error.request.statusText);
                 } else {
-                    setError(error.response.data.message || "An error occurred while fetching orders.");
+                    setError("Network error: Unable to connect to the server.");
                 }
             }
         };
